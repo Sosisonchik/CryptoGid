@@ -1,11 +1,11 @@
 package com.example.apple.cryptogid;
 
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +16,16 @@ public class IcoAdapter extends RecyclerView.Adapter<IcoAdapter.IcoViewHolder> {
 
     public void add(Coin coin){
         coins.add(coin);
+        notifyDataSetChanged();
+    }
+
+    public Coin getCoin(int position){
+        return coins.get(position);
+    }
+
+    public void update(int position,Coin coin){
+        coins.set(position,coin);
+        notifyDataSetChanged();
     }
 
 
@@ -28,7 +38,7 @@ public class IcoAdapter extends RecyclerView.Adapter<IcoAdapter.IcoViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull IcoViewHolder icoViewHolder, int i) {
-
+        icoViewHolder.bind(i);
     }
 
     @Override
@@ -42,11 +52,12 @@ public class IcoAdapter extends RecyclerView.Adapter<IcoAdapter.IcoViewHolder> {
         ImageView icon;
         ImageView arrow;
 
-        private void bind(ViewGroup viewGroup, int index){
+        private void bind( int index){
             Coin coin = coins.get(index);
 
+
             name.setText(coin.getName());
-            price.setText(coin.getPrice());
+            price.setText(String.valueOf(coin.getPrice()) + " $");
             icon.setImageResource(coin.getImgNumber());
 
             if (coin.isUp()) {
@@ -54,6 +65,9 @@ public class IcoAdapter extends RecyclerView.Adapter<IcoAdapter.IcoViewHolder> {
             }else{
                 arrow.setImageResource(R.drawable.arrow_down);
             }
+
+            itemView.setAnimation(AnimationUtils.loadAnimation(itemView.getContext(),R.anim.status_arrive));
+            arrow.setAnimation(AnimationUtils.loadAnimation(itemView.getContext(),R.anim.rotate));
         }
 
         public IcoViewHolder(@NonNull View itemView) {

@@ -28,4 +28,8 @@ public class Coin {
     public Integer getImgNumber() {
         return imgNumber;
     }
+
+    public void setUp(boolean status){
+        this.up = status;
+    }
 }
